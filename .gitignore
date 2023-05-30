@@ -8,6 +8,9 @@
 
 /environments
 
+/environments/environment.ts
+/environments/environment.prod.ts
+
 # Node
 /node_modules
 npm-debug.log

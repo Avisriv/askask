@@ -1,0 +1,16 @@
+<div class="body">
+  <div class="content"> 
+     <h1>
+      {{ title }}
+    </h1>
+    <div id="main">
+      
+      <div *ngFor="let item of messageArray">
+        <span>{{item.name}}: </span> {{item.message}}
+      </div>
+    </div>
+    <div id="inputId"><input id="input" type="text" placeholder="Ask something..." autocomplete="off" [(ngModel)]="message" (keyup.enter)="sendMessage()"/></div>
+  </div>
+  
+  </div>
+  

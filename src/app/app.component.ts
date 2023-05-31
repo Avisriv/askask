@@ -23,7 +23,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.messageArray.push({name:'bot', message: 'How may I help you?'});
-    console.log(CryptoJS.AES.encrypt("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", "Train1q2w3e1").toString());
   }
 
   async sendMessage(){

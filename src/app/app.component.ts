@@ -4,6 +4,8 @@ import { Configuration, OpenAIApi } from "openai";
 
 import { environment } from '../../environments/environment';
 
+import * as CryptoJS from "crypto-js";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,12 +17,13 @@ export class AppComponent implements OnInit {
   message:string= '';
 
  configuration = new Configuration({
-    apiKey: environment.OPEN_AI_API_KEY,
+    apiKey: CryptoJS.AES.decrypt(environment.MY_VALUE, environment.MY_VAL).toString(CryptoJS.enc.Utf8),
   });
  openai = new OpenAIApi(this.configuration);
 
   ngOnInit(): void {
     this.messageArray.push({name:'bot', message: 'How may I help you?'});
+    console.log(CryptoJS.AES.encrypt("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", "Train1q2w3e1").toString());
   }
 
   async sendMessage(){

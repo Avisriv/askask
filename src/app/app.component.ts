@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Configuration, OpenAIApi } from "openai";
+import { Configuration, OpenAIApi, ChatCompletionRequestMessage } from "openai";
 
-import { environment } from '../../environments/environment';
+import { environment, initialPrompt } from '../../environments/environment';
 
 import * as CryptoJS from "crypto-js";
 
@@ -23,25 +23,34 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.messageArray.push({name:'bot', message: 'How may I help you?'});
+    this.sendToGPT(initialPrompt, "system");
   }
 
   async sendMessage(){
     const data = { message:this.message };
     this.messageArray.push({name:'you', message:this.message});
-    this.sendToGPT(this.message);
+    const promptEngineered = "Just like the above prompt and combination, please help me in this new situation: \n"+ this.message + "\n"+
+"In case you can\'t reference the above prompt and response combination, say \'Unexpected Error, please contact support\'."
+    this.sendToGPT(promptEngineered);
     this.message = '';
   
   }
 
-  async sendToGPT(userPrompt: string) {
+  myMessages: Array<ChatCompletionRequestMessage> = []
+
+  async sendToGPT(userPrompt: string, myRole = "user") {
     console.log('hello:'+userPrompt);
+    const role = myRole
     try {
+      this.myMessages.push( {"role": "user", "content": userPrompt} )
       const completion = await this.openai.createChatCompletion({
         model: "gpt-3.5-turbo",
-        messages: [ {"role": "user", "content": userPrompt} ]
+        messages: this.myMessages as Array<ChatCompletionRequestMessage>
       });
       console.log(completion.data.choices[0].message);
       this.messageArray.push({name:'bot', message: ''+completion.data.choices[0].message?.content});
+     
+      
     } catch (err: any) {
       
     }
